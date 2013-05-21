@@ -39,8 +39,8 @@ object Users extends Table[User]("users") {
   def lastName = column[String]("lastName", O.Nullable)
   def authMode = column[AuthenticationMode.AuthenticationMode]("authMode", O.NotNull, O.Default(AuthenticationMode.DB))
   def preferredLocale = column[Locale]("preferredLocale", O.NotNull, O.Default(Locale.forLanguageTag("en")))
-  def createdAt = column[DateTime]("createdAt", O.NotNull, O.Default(DateTime.now()))
-  def updatedAt = column[DateTime]("updatedAt", O.NotNull, O.Default(DateTime.now()))
+  def createdAt = column[DateTime]("createdAt", O.NotNull)
+  def updatedAt = column[DateTime]("updatedAt", O.NotNull)
 
   def * = id.? ~ email ~ password ~ admin ~ privateKey ~ publicKey ~ lastLoginAt.? ~ firstName.? ~ lastName.? ~ authMode ~ preferredLocale ~ createdAt ~ updatedAt <> (User, User.unapply _)
 }
