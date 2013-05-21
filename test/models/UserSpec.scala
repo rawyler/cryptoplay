@@ -37,5 +37,25 @@ class UserSpec extends Specification {
         (count.firstOption getOrElse (0)) must equalTo(0)
       }
     }
+
+    "be part of a team" in new WithApplication {
+      DB.withSession { implicit session =>
+        val teamId1 = Teams.create.insert(Team(None, "Rul0rz"))
+        val teamId2 = Teams.create.insert(Team(None, "Bash0rz"))
+        val teamId3 = Teams.create.insert(Team(None, "Kick0rz"))
+        val userId = Users.create.insert(User(None, "boba@fett.com", "kjasu72hal98", false, "pr1", "pu1", None, None, None))
+
+        TeamMembers.insert(TeamMember(teamId1, userId, "pass"))
+        TeamMembers.insert(TeamMember(teamId2, userId, "pass"))
+        TeamMembers.insert(TeamMember(teamId3, userId, "pass"))
+
+        val teams = for {
+          tm <- TeamMembers
+          t <- tm.team if tm.userId === userId
+        } yield t
+
+        val result = teams.list.map(_.id.get) must containAllOf(List(teamId1, teamId2, teamId3))
+      }
+    }
   }
 }

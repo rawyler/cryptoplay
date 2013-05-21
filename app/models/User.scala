@@ -43,4 +43,6 @@ object Users extends Table[User]("users") {
   def updatedAt = column[DateTime]("updatedAt", O.NotNull)
 
   def * = id.? ~ email ~ password ~ admin ~ privateKey ~ publicKey ~ lastLoginAt.? ~ firstName.? ~ lastName.? ~ authMode ~ preferredLocale ~ createdAt ~ updatedAt <> (User, User.unapply _)
+
+  def create = id.? ~ email ~ password ~ admin ~ privateKey ~ publicKey ~ lastLoginAt.? ~ firstName.? ~ lastName.? ~ authMode ~ preferredLocale ~ createdAt ~ updatedAt <> (User, User.unapply _) returning id
 }

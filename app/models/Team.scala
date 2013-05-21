@@ -26,4 +26,6 @@ object Teams extends Table[Team]("teams") {
   def updatedAt = column[DateTime]("updatedAt", O.NotNull)
 
   def * = id.? ~ name ~ description.? ~ noAdmin ~ noRoot ~ createdAt ~ updatedAt <> (Team, Team.unapply _)
+
+  def create = id.? ~ name ~ description.? ~ noAdmin ~ noRoot ~ createdAt ~ updatedAt <> (Team, Team.unapply _) returning id
 }
