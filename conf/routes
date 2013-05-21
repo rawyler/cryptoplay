@@ -3,7 +3,35 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                                              controllers.Application.index
+
+# Users
+#GET     /users                                         controllers.Users.index
+#GET     /users/:id                                     controllers.Users.show(id: Long)
+#POST    /users                                         controllers.Users.create
+#PUT     /users/:id                                     controllers.Users.update(id: Long)
+#DELETE  /users/:id                                     controllers.Users.destroy(id: Long)
+                                                       
+# Teams                                                
+#GET     /teams                                         controllers.Teams.index
+#GET     /teams/:id                                     controllers.Teams.show(id: Long)
+#POST    /teams                                         controllers.Teams.create
+#PUT     /teams/:id                                     controllers.Teams.update(id: Long)
+#DELETE  /teams/:id                                     controllers.Teams.destroy(id: Long)
+
+# Groups
+#GET     /teams/:team/groups                            controllers.Groups.index(team: Long)
+#GET     /teams/:team/groups/:id                        controllers.Groups.show(team: Long, id: Long)
+#POST    /teams/:team/groups                            controllers.Groups.create(team: Long)
+#PUT     /groups/:id                                    controllers.Groups.update(id: Long)
+#DELETE  /groups/:id                                    controllers.Groups.destroy(id: Long)
+
+# Accounts
+#GET     /teams/:team/groups/:group/accounts            controllers.Accounts.index(team: Long, group: Long)
+#GET     /teams/:team/groups/:group/accounts/:id        controllers.Accounts.show(team: Long, group: Long, id: Long)
+#POST    /teams/:team/groups/:group/accounts            controllers.Accounts.create(team: Long, group: Long)
+#PUT     /accounts/:id                                  controllers.Accounts.update(id: Long)
+#DELETE  /accounts/:id                                  controllers.Accounts.destroy(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
