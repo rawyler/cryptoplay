@@ -29,8 +29,8 @@ object TeamMembers extends Model[TeamMember]("teammembers") {
 
   def * = id.? ~ teamId ~ userId ~ password ~ admin ~ locked ~ createdAt ~ updatedAt <> (TeamMember, TeamMember.unapply _)
 
-  def team = foreignKey("team_fk", teamId, Teams)(_.id)
-  def user = foreignKey("user_fk", userId, Users)(_.id)
+  def team = foreignKey("fk_member_team", teamId, Teams)(_.id)
+  def user = foreignKey("fk_member_user", userId, Users)(_.id)
 
   def idx = index("idx_team_user", (teamId, userId), unique = true)
 }

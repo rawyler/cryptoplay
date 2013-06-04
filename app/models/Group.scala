@@ -9,6 +9,7 @@ import scala.slick.session.Database
 
 case class Group(
   id: Option[Long] = None,
+  teamId: Long,
   name: String,
   description: Option[String] = None,
   createdAt: DateTime = DateTime.now(),
@@ -18,8 +19,11 @@ case class Group(
 }
 
 object Groups extends Model[Group]("groups") {
+  def teamId = column[Long]("teamId", O.NotNull)
   def name = column[String]("name", O.NotNull)
   def description = column[String]("description", O.Nullable)
 
-  def * = id.? ~ name ~ description.? ~ createdAt ~ updatedAt <> (Group, Group.unapply _)
+  def * = id.? ~ teamId ~ name ~ description.? ~ createdAt ~ updatedAt <> (Group, Group.unapply _)
+  
+  def team = foreignKey("fk_groups_team", teamId, Teams)(_.id)
 }
