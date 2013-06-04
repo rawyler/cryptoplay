@@ -19,7 +19,7 @@ case class Team(
   def withId(id: Long) = copy(id = Some(id))
 }
 
-object Teams extends Model[Team]("team") {
+object Teams extends Model[Team]("teams") {
   def name = column[String]("name", O.NotNull)
   def description = column[String]("description", O.Nullable)
   def noAdmin = column[Boolean]("noAdmin", O.NotNull, O.Default(false))

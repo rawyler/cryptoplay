@@ -54,9 +54,6 @@ class UserSpec extends Specification {
           t <- tm.team if tm.userId === user.id
         } yield t
         
-        println(team1)
-        println(Teams.findById(team1.id.get).get)
-
         val result = teams.list must containAllOf(List(team1, team2, team3))
       }
     }
