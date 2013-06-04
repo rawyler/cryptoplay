@@ -25,10 +25,12 @@ case class User(
   authMode: AuthenticationMode.AuthenticationMode = AuthenticationMode.DB,
   preferredLocale: Locale = Locale.forLanguageTag("en"),
   createdAt: DateTime = DateTime.now(),
-  var updatedAt: DateTime = DateTime.now())
+  var updatedAt: DateTime = DateTime.now()) extends Entity[User] {
+  
+  def withId(id: Long) = copy(id = Some(id))
+}
 
-object Users extends Table[User]("users") {
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+object Users extends Model[User]("users") {
   def email = column[String]("email", O.NotNull)
   def password = column[String]("password", O.NotNull)
   def admin = column[Boolean]("admin", O.NotNull, O.Default(false))
@@ -39,10 +41,6 @@ object Users extends Table[User]("users") {
   def lastName = column[String]("lastName", O.Nullable)
   def authMode = column[AuthenticationMode.AuthenticationMode]("authMode", O.NotNull, O.Default(AuthenticationMode.DB))
   def preferredLocale = column[Locale]("preferredLocale", O.NotNull, O.Default(Locale.forLanguageTag("en")))
-  def createdAt = column[DateTime]("createdAt", O.NotNull)
-  def updatedAt = column[DateTime]("updatedAt", O.NotNull)
 
   def * = id.? ~ email ~ password ~ admin ~ privateKey ~ publicKey ~ lastLoginAt.? ~ firstName.? ~ lastName.? ~ authMode ~ preferredLocale ~ createdAt ~ updatedAt <> (User, User.unapply _)
-
-  def create = id.? ~ email ~ password ~ admin ~ privateKey ~ publicKey ~ lastLoginAt.? ~ firstName.? ~ lastName.? ~ authMode ~ preferredLocale ~ createdAt ~ updatedAt <> (User, User.unapply _) returning id
 }

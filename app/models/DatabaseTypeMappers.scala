@@ -5,8 +5,8 @@ import scala.slick.lifted.MappedTypeMapper
 import java.util.Locale
 
 object DatabaseTypeMappers {
-  implicit val jodaTimeTypeMapper = MappedTypeMapper.base[DateTime, java.sql.Date](
-    x => new java.sql.Date(x.toDate().getTime()),
+  implicit val jodaTimeTypeMapper = MappedTypeMapper.base[DateTime, java.sql.Timestamp](
+    x => new java.sql.Timestamp(x.toDate().getTime()),
     x => new DateTime(x.getTime))
 
   implicit val authModeTypeMapper = MappedTypeMapper.base[AuthenticationMode.AuthenticationMode, String](

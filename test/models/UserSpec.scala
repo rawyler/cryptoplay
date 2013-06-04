@@ -27,7 +27,7 @@ class UserSpec extends Specification {
           if u.email === "dude@tron.com"
         } yield u
 
-        user.mutate(_.delete)
+        Users.delete(id)
 
         val count = for {
           u <- Users
@@ -40,21 +40,24 @@ class UserSpec extends Specification {
 
     "be part of a team" in new WithApplication {
       DB.withSession { implicit session =>
-        val teamId1 = Teams.create.insert(Team(None, "Rul0rz"))
-        val teamId2 = Teams.create.insert(Team(None, "Bash0rz"))
-        val teamId3 = Teams.create.insert(Team(None, "Kick0rz"))
-        val userId = Users.create.insert(User(None, "boba@fett.com", "kjasu72hal98", false, "pr1", "pu1", None, None, None))
+        val team1 = Teams.create(Team(None, "Rul0rz"))
+        val team2 = Teams.create(Team(None, "Bash0rz"))
+        val team3 = Teams.create(Team(None, "Kick0rz"))
+        val user = Users.create(User(None, "boba@fett.com", "kjasu72hal98", false, "pr1", "pu1", None, None, None))
 
-        TeamMembers.insert(TeamMember(teamId1, userId, "pass"))
-        TeamMembers.insert(TeamMember(teamId2, userId, "pass"))
-        TeamMembers.insert(TeamMember(teamId3, userId, "pass"))
+        TeamMembers.insert(TeamMember(None, team1.id.get, user.id.get, "pass"))
+        TeamMembers.insert(TeamMember(None, team2.id.get, user.id.get, "pass"))
+        TeamMembers.insert(TeamMember(None, team3.id.get, user.id.get, "pass"))
 
         val teams = for {
           tm <- TeamMembers
-          t <- tm.team if tm.userId === userId
+          t <- tm.team if tm.userId === user.id
         } yield t
+        
+        println(team1)
+        println(Teams.findById(team1.id.get).get)
 
-        val result = teams.list.map(_.id.get) must containAllOf(List(teamId1, teamId2, teamId3))
+        val result = teams.list must containAllOf(List(team1, team2, team3))
       }
     }
   }
