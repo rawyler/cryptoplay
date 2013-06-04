@@ -9,7 +9,7 @@ import scala.slick.session.Database
 
 object AuthenticationMode extends Enumeration {
   type AuthenticationMode = Value
-  val DB = Value
+  val DBAuth = Value
 }
 
 case class User(
@@ -22,7 +22,7 @@ case class User(
   lastLoginAt: Option[DateTime],
   firstName: Option[String],
   lastName: Option[String],
-  authMode: AuthenticationMode.AuthenticationMode = AuthenticationMode.DB,
+  authMode: AuthenticationMode.AuthenticationMode = AuthenticationMode.DBAuth,
   preferredLocale: Locale = Locale.forLanguageTag("en"),
   createdAt: DateTime = DateTime.now(),
   var updatedAt: DateTime = DateTime.now()) extends Entity[User] {
@@ -39,7 +39,7 @@ object Users extends Model[User]("users") {
   def lastLoginAt = column[DateTime]("lastLoginAt", O.Nullable)
   def firstName = column[String]("firstName", O.Nullable)
   def lastName = column[String]("lastName", O.Nullable)
-  def authMode = column[AuthenticationMode.AuthenticationMode]("authMode", O.NotNull, O.Default(AuthenticationMode.DB))
+  def authMode = column[AuthenticationMode.AuthenticationMode]("authMode", O.NotNull, O.Default(AuthenticationMode.DBAuth))
   def preferredLocale = column[Locale]("preferredLocale", O.NotNull, O.Default(Locale.forLanguageTag("en")))
 
   def * = id.? ~ email ~ password ~ admin ~ privateKey ~ publicKey ~ lastLoginAt.? ~ firstName.? ~ lastName.? ~ authMode ~ preferredLocale ~ createdAt ~ updatedAt <> (User, User.unapply _)
