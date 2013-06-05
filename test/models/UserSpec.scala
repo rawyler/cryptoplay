@@ -53,8 +53,8 @@ class UserSpec extends Specification {
           tm <- TeamMembers
           t <- tm.team if tm.userId === user.id
         } yield t
-        
-        val result = teams.list must containAllOf(List(team1, team2, team3))
+
+        teams.list must containAllOf(List(team1, team2, team3))
       }
     }
   }

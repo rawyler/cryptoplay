@@ -13,7 +13,7 @@ GET     /                                              controllers.Application.i
 #DELETE  /users/:id                                     controllers.Users.destroy(id: Long)
                                                        
 # Teams                                                
-#GET     /teams                                         controllers.Teams.index
+GET     /teams                                         controllers.Teams.index
 #GET     /teams/:id                                     controllers.Teams.show(id: Long)
 #POST    /teams                                         controllers.Teams.create
 #PUT     /teams/:id                                     controllers.Teams.update(id: Long)

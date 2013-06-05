@@ -6,6 +6,7 @@ import DatabaseTypeMappers._
 import play.api.db.slick.Config.driver.simple._
 import scala.slick.driver.ExtendedProfile
 import scala.slick.session.Database
+import scala.slick.direct.ImplicitQueryableMacros._
 
 case class Team(
   id: Option[Long] = None,

@@ -7,6 +7,11 @@ import slick.lifted.{ Join, MappedTypeMapper }
 import org.joda.time.DateTime
 import DatabaseTypeMappers._
 
+case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
+  lazy val prev = Option(page - 1).filter(_ >= 0)
+  lazy val next = Option(page + 1).filter(_ => (offset + items.size) < total)
+}
+
 trait Entity[T <: Entity[T]] {
   val id: Option[Long]
   val createdAt: DateTime
@@ -22,6 +27,8 @@ abstract class Model[T <: Entity[T]](tableName: String) extends Table[T](None, t
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def createdAt = column[DateTime]("createdAt", O.NotNull)
   def updatedAt = column[DateTime]("updatedAt", O.NotNull)
+  
+  def nth = Vector(id, createdAt, updatedAt)
 
   protected def autoInc = * returning id
 
@@ -38,6 +45,15 @@ abstract class Model[T <: Entity[T]](tableName: String) extends Table[T](None, t
     findAllQuery.list
   }
 
+  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 0): Page[T] = DB.withSession { implicit s: Session =>
+    val offset = pageSize * page
+
+    val q = findAllQuery.sortBy(_.nth(orderBy).asc.nullsLast).drop(offset).take(pageSize)
+    val totalSize = count
+
+    Page(q.list, page, offset, totalSize)
+  }
+
   def update(entity: T): T = DB.withSession { implicit s: Session =>
     entity.id.map { id =>
       entity.updatedAt = DateTime.now()
@@ -48,6 +64,10 @@ abstract class Model[T <: Entity[T]](tableName: String) extends Table[T](None, t
 
   def delete(id: Long): Boolean = DB.withSession { implicit s: Session =>
     this.filter(_.id === id).delete > 0
+  }
+
+  lazy val count: Int = DB.withSession { implicit s: Session =>
+    Query(this.length).first
   }
 
   lazy val findByIdQuery = for {
