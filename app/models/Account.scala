@@ -28,6 +28,6 @@ object Accounts extends Model[Account]("accounts") {
   def description = column[String]("description", O.Nullable)
 
   def * = id.? ~ groupId ~ name ~ username ~ password ~ description.? ~ createdAt ~ updatedAt <> (Account, Account.unapply _)
-  
+
   def group = foreignKey("fk_accounts_group", groupId, Groups)(_.id)
 }
