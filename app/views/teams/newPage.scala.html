@@ -1,0 +1,18 @@
+@(teamForm: Form[Team])(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(Messages("teams.create.title")) {
+    
+    <h1>@Messages("teams.create.title")</h1>
+    @form(action = routes.TeamsController.create()) {
+        <fieldset>
+            @inputText(teamForm("name"))
+            @textarea(teamForm("description"))
+            @checkbox(teamForm("noAdmin"))
+            @checkbox(teamForm("noRoot"))
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    }
+}

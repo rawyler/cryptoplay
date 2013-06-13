@@ -15,7 +15,7 @@ GET     /                                              controllers.Application.i
 # Teams                                                
 GET     /teams                                         controllers.TeamsController.index
 GET     /teams/new                                     controllers.TeamsController.newPage
-#POST    /teams                                         controllers.TeamsController.create
+POST    /teams                                         controllers.TeamsController.create
 GET     /teams/:id                                     controllers.TeamsController.show(id: Long)
 #PUT     /teams/:id                                     controllers.TeamsController.update(id: Long)
 #DELETE  /teams/:id                                     controllers.TeamsController.destroy(id: Long)
