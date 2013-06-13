@@ -18,7 +18,7 @@ GET     /teams/new                                     controllers.TeamsControll
 POST    /teams                                         controllers.TeamsController.create
 GET     /teams/:id                                     controllers.TeamsController.show(id: Long)
 #PUT     /teams/:id                                     controllers.TeamsController.update(id: Long)
-#DELETE  /teams/:id                                     controllers.TeamsController.destroy(id: Long)
+DELETE  /teams/:id                                     controllers.TeamsController.destroy(id: Long)
 
 # Groups
 #GET     /teams/:team/groups                            controllers.GroupsController.index(team: Long)

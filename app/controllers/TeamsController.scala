@@ -7,6 +7,7 @@ import play.api.data._
 import play.api.data.Forms._
 import models.Teams
 import models.Team
+import views.html.defaultpages.badRequest
 
 object TeamsController extends Controller {
 
@@ -32,6 +33,10 @@ object TeamsController extends Controller {
         Teams.create(team)
         Redirect(routes.TeamsController.index).flashing("success" -> Messages("teams.created"))
       })
+  }
+
+  def destroy(id: Long) = Action { implicit request =>
+    if (Teams.delete(id)) Ok else NoContent
   }
 
   def teamForm = Form(

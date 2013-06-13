@@ -10,6 +10,7 @@ import play.api.data.Forms._
 import models.Team
 import models.Teams
 import views.html.defaultpages.badRequest
+import play.api.test.FakeRequest
 
 class TeamsControllerSpec extends Specification {
 
@@ -50,14 +51,6 @@ class TeamsControllerSpec extends Specification {
         status(result) must equalTo(BAD_REQUEST)
       }
     }
-    "create no team without name" in {
-      running(FakeApplication()) {
-        val result = controllers.TeamsController.create(
-          FakeRequest().withFormUrlEncodedBody("description" -> "Description", "noAdmin" -> "false", "noRoot" -> "false"))
-
-        status(result) must equalTo(BAD_REQUEST)
-      }
-    }
 
     "create a team" in {
       running(FakeApplication()) {
@@ -66,6 +59,21 @@ class TeamsControllerSpec extends Specification {
 
         status(result) must equalTo(SEE_OTHER)
         redirectLocation(result) must beSome.which(_ == "/teams")
+      }
+    }
+
+    "destroy a team" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        val noContent = controllers.TeamsController.destroy(1)(FakeRequest())
+
+        status(noContent) must equalTo(NO_CONTENT)
+
+        controllers.TeamsController.create(
+          FakeRequest().withFormUrlEncodedBody("name" -> "celtics", "description" -> "Description", "noAdmin" -> "false", "noRoot" -> "false"))
+
+        val result = controllers.TeamsController.destroy(1)(FakeRequest())
+
+        status(result) must equalTo(OK)
       }
     }
   }
