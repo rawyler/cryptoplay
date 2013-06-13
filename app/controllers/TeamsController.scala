@@ -20,7 +20,7 @@ object TeamsController extends Controller {
     }.getOrElse(NotFound)
   }
 
-  def newPage() = Action { implicit request =>
+  def newPage = Action { implicit request =>
     Ok(views.html.teams.newPage(teamForm))
   }
 
@@ -32,8 +32,8 @@ object TeamsController extends Controller {
         Teams.create(team)
         Redirect(routes.TeamsController.index).flashing("success" -> Messages("teams.created"))
       })
-
   }
+
   def teamForm = Form(
     mapping(
       "id" -> optional(longNumber),
