@@ -1,7 +1,18 @@
-@()
+@(currentPage: Page[Team])
 
 @main(Messages("teams.list.title")) {
     
-    <h1>@Messages("teams.list.title")</h1>
+    <h1>@Messages("teams.title")</h1>
+    @Option(currentPage.items).filterNot(_.isEmpty).map { teams =>
+        <h2>@Messages("teams.list.title")</h2>
+        <ul>
+        @teams.map { team =>
+            <li class="team-item"><a href="@routes.TeamsController.show(team.id.get)">@team.name</a></li>
+        }
+        </ul>
+    }.getOrElse {
+        <h2>@Messages("teams.none.title")</h2>
+        <div><a href="@routes.TeamsController.newPage()">@Messages("teams.none.noworries")</a></div>
+    }
 
 }

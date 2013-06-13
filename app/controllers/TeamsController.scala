@@ -9,11 +9,7 @@ import models.Teams
 object TeamsController extends Controller {
 
   def index = Action {
-    Ok(views.html.teams.index())
-  }
-
-  def list(page: Int, orderBy: Int) = Action {
-    Ok(views.html.teams.index())
+    Ok(views.html.teams.index(Teams.list(0, 10, 0)))
   }
 
   def show(id: Long) = Action {
@@ -21,5 +17,7 @@ object TeamsController extends Controller {
       Ok(views.html.teams.show(team))
     }.getOrElse(NotFound)
   }
+
+  def newPage() = TODO
 
 }
