@@ -1,0 +1,10 @@
+@(team: Long, group: Group)(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(Messages("groups.show.title", group.name)) {
+    
+    <h1>@Messages("groups.show.title", group.name)</h1>
+    <em>@group.description</em>
+}

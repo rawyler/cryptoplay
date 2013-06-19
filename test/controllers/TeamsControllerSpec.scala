@@ -14,7 +14,7 @@ import play.api.test.FakeRequest
 
 class TeamsControllerSpec extends Specification {
 
-  "Teams" should {
+  "TeamsController" should {
     "render the index page" in {
       running(FakeApplication()) {
         val page = route(FakeRequest(GET, "/teams")).get

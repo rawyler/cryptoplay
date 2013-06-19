@@ -8,6 +8,7 @@ import play.api.data.Forms._
 import models.Teams
 import models.Team
 import views.html.defaultpages.badRequest
+import models.Groups
 
 object TeamsController extends Controller {
 
@@ -32,6 +33,12 @@ object TeamsController extends Controller {
   }
 
   def show(id: Long) = Action { implicit request =>
+    Teams.findById(id).map { team =>
+      Ok(views.html.teams.show(team, Groups.findByTeam(id)))
+    }.getOrElse(NotFound)
+  }
+
+  def edit(id: Long) = Action { implicit request =>
     Teams.findById(id).map { team =>
       Ok(views.html.teams.edit(id, teamForm.fill(team)))
     }.getOrElse(NotFound)

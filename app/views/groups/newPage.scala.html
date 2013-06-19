@@ -1,0 +1,16 @@
+@(team: Long, groupForm: Form[GroupAdd])(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(Messages("groups.create.title")) {
+    
+    <h1>@Messages("groups.create.title")</h1>
+    @form(action = routes.GroupsController.create(team)) {
+        <fieldset>
+            @inputText(groupForm("name"))
+            @textarea(groupForm("description"))
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    }
+}

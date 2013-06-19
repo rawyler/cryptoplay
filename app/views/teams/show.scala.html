@@ -1,0 +1,16 @@
+@(team: Team, groups: Seq[Group])(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(Messages("teams.show.title", team.name)) {
+    
+    <h1>@Messages("teams.show.title", team.name)</h1>
+    <em>@team.description</em>
+    
+    <ul>
+    @groups.map { group =>
+      <li><a href="@routes.GroupsController.show(team.id.get, group.id.get)">@group.name</li>
+    }
+    </ul>
+}
