@@ -31,8 +31,9 @@ POST    /teams/:team/groups                            controllers.GroupsControl
 
 # Accounts
 #GET     /teams/:team/groups/:group/accounts            controllers.AccountsController.index(team: Long, group: Long)
-#GET     /teams/:team/groups/:group/accounts/:id        controllers.AccountsController.show(team: Long, group: Long, id: Long)
-#POST    /teams/:team/groups/:group/accounts            controllers.AccountsController.create(team: Long, group: Long)
+GET     /teams/:team/groups/:group/accounts/new        controllers.AccountsController.newPage(team: Long, group: Long)
+GET     /teams/:team/groups/:group/accounts/:id        controllers.AccountsController.show(team: Long, group: Long, id: Long)
+POST    /teams/:team/groups/:group/accounts            controllers.AccountsController.create(team: Long, group: Long)
 #PUT     /accounts/:id                                  controllers.AccountsController.update(id: Long)
 #DELETE  /accounts/:id                                  controllers.AccountsController.destroy(id: Long)
 

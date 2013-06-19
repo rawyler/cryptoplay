@@ -1,0 +1,10 @@
+@(team: Long, group: Long, account: Account)(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(Messages("accounts.show.title", account.name)) {
+    
+    <h1>@Messages("groups.show.title", account.name)</h1>
+    <em>@account.description</em>
+}

@@ -10,6 +10,7 @@ import models.Group
 import models.GroupAdd
 import views.html.defaultpages.badRequest
 import models.Teams
+import models.Accounts
 
 object GroupsController extends Controller {
 
@@ -34,7 +35,7 @@ object GroupsController extends Controller {
   def show(team: Long, id: Long) = Action { implicit request =>
     Teams.findById(team).map { _ =>
       Groups.findById(id).map { group =>
-        Ok(views.html.groups.show(team, group))
+        Ok(views.html.groups.show(team, group, Accounts.findByTeamAndGroup(team, id)))
       }.getOrElse(NotFound)
     }.getOrElse(NotFound)
   }
@@ -45,6 +46,6 @@ object GroupsController extends Controller {
 
   def groupForm = Form(
     mapping(
-      "name" -> text,
+      "name" -> nonEmptyText,
       "description" -> optional(text))(GroupAdd)(GroupAdd.unapply))
 }

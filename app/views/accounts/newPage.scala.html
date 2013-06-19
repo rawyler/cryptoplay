@@ -1,0 +1,18 @@
+@(team: Long, group: Long, accountForm: Form[AccountAdd])(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(Messages("accounts.create.title")) {
+    
+    <h1>@Messages("accounts.create.title")</h1>
+    @form(action = routes.AccountsController.create(team, group)) {
+        <fieldset>
+            @inputText(accountForm("name"))
+            @inputText(accountForm("username"))
+            @inputPassword(accountForm("password"))
+            @textarea(accountForm("description"))
+        </fieldset>
+        <button type="submit" class="btn btn-primary">@Messages("create")</button>
+    }
+}

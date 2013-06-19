@@ -1,4 +1,4 @@
-@(team: Long, group: Group)(implicit flash: Flash)
+@(team: Long, group: Group, accounts: Seq[Account])(implicit flash: Flash)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -7,4 +7,10 @@
     
     <h1>@Messages("groups.show.title", group.name)</h1>
     <em>@group.description</em>
+    
+    <ul>
+    @accounts.map { account =>
+      <li><a href="@routes.AccountsController.show(team, group.id.get, account.id.get)">@account.name</li>
+    }
+    </ul>
 }

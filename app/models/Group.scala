@@ -35,9 +35,7 @@ object Groups extends Model[Group]("groups") {
     findByTeamQuery(team).list
   }
 
-  def findByTeamQuery(team: Long) = DB.withSession { implicit s: Session =>
-    for {
-      g <- Groups if g.teamId === team
-    } yield g
-  }
+  def findByTeamQuery(team: Long) = for {
+    g <- Groups if g.teamId === team
+  } yield g
 }
