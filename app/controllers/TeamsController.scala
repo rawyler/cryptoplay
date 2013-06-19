@@ -11,14 +11,10 @@ import views.html.defaultpages.badRequest
 
 object TeamsController extends Controller {
 
+  val Home = Redirect(routes.TeamsController.index)
+
   def index = Action { implicit request =>
     Ok(views.html.teams.index(Teams.list(0, 10, 0)))
-  }
-
-  def show(id: Long) = Action { implicit request =>
-    Teams.findById(id).map { team =>
-      Ok(views.html.teams.show(team))
-    }.getOrElse(NotFound)
   }
 
   def newPage = Action { implicit request =>
@@ -31,12 +27,28 @@ object TeamsController extends Controller {
         BadRequest(views.html.teams.newPage(formWithErrors)),
       team => {
         Teams.create(team)
-        Redirect(routes.TeamsController.index).flashing("success" -> Messages("teams.created"))
+        Home.flashing("success" -> Messages("teams.created", team.name))
+      })
+  }
+
+  def show(id: Long) = Action { implicit request =>
+    Teams.findById(id).map { team =>
+      Ok(views.html.teams.edit(id, teamForm.fill(team)))
+    }.getOrElse(NotFound)
+  }
+
+  def update(id: Long) = Action { implicit request =>
+    teamForm.bindFromRequest.fold(
+      formWithErrors =>
+        BadRequest(views.html.teams.edit(id, formWithErrors)),
+      team => {
+        Teams.update(team.withId(id))
+        Home.flashing("success" -> Messages("teams.updated", team.name))
       })
   }
 
   def destroy(id: Long) = Action { implicit request =>
-    if (Teams.delete(id)) Ok else NoContent
+    if (Teams.delete(id)) Home.flashing("success" -> Messages("teams.deleted")) else NoContent
   }
 
   def teamForm = Form(

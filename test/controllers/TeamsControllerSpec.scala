@@ -62,6 +62,22 @@ class TeamsControllerSpec extends Specification {
       }
     }
 
+    "update a team" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        controllers.TeamsController.create(
+          FakeRequest().withFormUrlEncodedBody("name" -> "celtics", "description" -> "Description", "noAdmin" -> "false", "noRoot" -> "false"))
+
+        val result = controllers.TeamsController.update(1)(
+          FakeRequest().withFormUrlEncodedBody("name" -> "celtics", "description" -> "New Description", "noAdmin" -> "true"))
+
+        status(result) must equalTo(SEE_OTHER)
+
+        val updated = controllers.TeamsController.show(1)(FakeRequest())
+
+        contentAsString(updated) must contain("New Description")
+      }
+    }
+
     "destroy a team" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
         val noContent = controllers.TeamsController.destroy(1)(FakeRequest())
@@ -73,7 +89,7 @@ class TeamsControllerSpec extends Specification {
 
         val result = controllers.TeamsController.destroy(1)(FakeRequest())
 
-        status(result) must equalTo(OK)
+        status(result) must equalTo(SEE_OTHER)
       }
     }
   }

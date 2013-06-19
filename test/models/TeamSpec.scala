@@ -27,12 +27,23 @@ class TeamSpec extends Specification {
           Accounts.create(Account(None, groupId, "fan2", "fan2", "fan2"))
           Accounts.create(Account(None, groupId, "fan3", "fan3", "fan3"))
         }
-        
+
         val proAccounts = Accounts.filter(_.groupId === pros.id).list
         val fanAccounts = Accounts.filter(_.groupId === fans.id).list
-        
+
         proAccounts.size === 2
         fanAccounts.size === 3
+      }
+    }
+
+    "be updated" in new WithApplication {
+      DB.withSession { implicit session =>
+        val team = Teams.create(Team(None, "Liquid", Some("Team Liquid")))
+
+        val updated = Teams.update(Team(team.id, "Liquid", Some("New Description"), true))
+
+        updated.description === Some("New Description")
+        updated.noAdmin === true
       }
     }
   }
